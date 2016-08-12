@@ -77,28 +77,31 @@ def refresh_services():
 #         print(service['services'])
 
 def handle(message):
-    (content_type, chat_type, chat_id,
-        username, command) = parse_command(message)
+    try:
+        (content_type, chat_type, chat_id,
+            username, command) = parse_command(message)
 
-    print('Content Type:', content_type,
-          '| Chat Type:', chat_type,
-          '| Chat ID:', chat_id,
-          '| Username:', username,
-          '| Command:', command)
+        print('Content Type:', content_type,
+              '| Chat Type:', chat_type,
+              '| Chat ID:', chat_id,
+              '| Username:', username,
+              '| Command:', command)
 
-    print('Message:', message)
+        print('Message:', message)
 
-    # we only want to process text messages from our specified chat
-    if (content_type == 'text' and
-        command[0] == '/'):
-        if str(chat_id) in allowed_chat_ids:
-            if username.lower() in map(str.lower, allowed_users):
-                cmd.handle(message)
+        # we only want to process text messages from our specified chat
+        if (content_type == 'text' and len(command) > 0 and
+            command[0] == '/'):
+            if str(chat_id) in allowed_chat_ids:
+                if username.lower() in map(str.lower, allowed_users):
+                    cmd.handle(message)
+                else:
+                    print('Unauthorized User:', username)
+                    bot.sendMessage(chat_id, deny_message().format(username))
             else:
-                print('Unauthorized User:', username)
-                bot.sendMessage(chat_id, deny_message().format(username))
-        else:
-            print('Unauthorized Chat ID:', chat_id)
+                print('Unauthorized Chat ID:', chat_id)
+    except UnicodeEncodeError:
+        pass
 
 def parse_command(message):
     content_type, chat_type, chat_id = telepot.glance(message)
