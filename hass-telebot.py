@@ -91,7 +91,7 @@ def handle(message):
     # we only want to process text messages from our specified chat
     if (content_type == 'text' and
         command[0] == '/'):
-        if str(chat_id) in allowed_chat_ids):
+        if str(chat_id) in allowed_chat_ids:
             if username.lower() in map(str.lower, allowed_users):
                 cmd.handle(message)
             else:
