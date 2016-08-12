@@ -97,7 +97,7 @@ def handle(message):
                     cmd.handle(message)
                 else:
                     print('Unauthorized User:', username)
-                    bot.sendMessage(chat_id, deny_message().format(username))
+                    # bot.sendMessage(chat_id, deny_message().format(username))
             else:
                 print('Unauthorized Chat ID:', chat_id)
     except UnicodeEncodeError:
